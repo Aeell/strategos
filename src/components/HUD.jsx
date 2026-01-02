@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Activity, Database, Lock, FileText, Upload, Zap, Globe, Terminal } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { FILES_DB } from '../data/lore';
@@ -35,6 +35,23 @@ export const HUD = ({ logs, state, onCommand, playSound }) => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [logs]);
+
+  const hexData = useMemo(() => [
+    { hex: '0x1A2', status: 'OK' }, { hex: '0x3B4', status: '..' }, { hex: '0x5C6', status: 'OK' },
+    { hex: '0x7D8', status: 'OK' }, { hex: '0x9E0', status: '..' }, { hex: '0xA1B', status: 'OK' },
+    { hex: '0xC2D', status: 'OK' }, { hex: '0xE3F', status: '..' }, { hex: '0xF40', status: 'OK' },
+    { hex: '0x152', status: '..' }, { hex: '0x263', status: 'OK' }, { hex: '0x374', status: 'OK' },
+    { hex: '0x485', status: '..' }, { hex: '0x596', status: 'OK' }, { hex: '0x6A7', status: 'OK' },
+    { hex: '0x7B8', status: '..' }, { hex: '0x8C9', status: 'OK' }, { hex: '0x9DA', status: '..' },
+    { hex: '0xAEB', status: 'OK' }, { hex: '0xBFC', status: 'OK' }, { hex: '0xC0D', status: '..' },
+    { hex: '0xD1E', status: 'OK' }, { hex: '0xE2F', status: 'OK' }, { hex: '0xF30', status: '..' },
+    { hex: '0x041', status: 'OK' }, { hex: '0x152', status: '..' }, { hex: '0x263', status: 'OK' },
+    { hex: '0x374', status: 'OK' }, { hex: '0x485', status: '..' }, { hex: '0x596', status: 'OK' },
+    { hex: '0x6A7', status: 'OK' }, { hex: '0x7B8', status: '..' }, { hex: '0x8C9', status: 'OK' },
+    { hex: '0x9DA', status: '..' }, { hex: '0xAEB', status: 'OK' }, { hex: '0xBFC', status: 'OK' },
+    { hex: '0xC0D', status: '..' }, { hex: '0xD1E', status: 'OK' }, { hex: '0xE2F', status: 'OK' },
+    { hex: '0xF30', status: '..' }, { hex: '0x041', status: 'OK' }
+  ], []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,6 +116,20 @@ export const HUD = ({ logs, state, onCommand, playSound }) => {
               <div className="flex justify-between text-[9px] opacity-70 text-warmind-red"><span>NEURAL_LOAD</span><span className={state === 'siva' ? 'text-red-500 animate-pulse' : ''}>{state === 'siva' ? 'CRITICAL' : state === 'processing' ? 'COMPUTING' : 'STABLE'}</span></div>
               <div className="h-1 bg-warmind-red/20 w-full overflow-hidden"><motion.div className="h-full bg-warmind-red" animate={{ width: state === 'siva' ? '100%' : state === 'processing' ? '80%' : '10%' }} /></div>
            </div>
+
+           {/* RESTORED SCROLLING HEX DATA */}
+           <div className="flex-1 overflow-hidden opacity-40 relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
+              <div className="text-[8px] font-mono leading-tight text-warmind-red">
+                 {hexData.map((item, i) => (
+                    <div key={i} className="flex justify-between">
+                       <span>{item.hex}</span>
+                       <span>{item.status}</span>
+                    </div>
+                 ))}
+              </div>
+           </div>
+
            <div className={`border p-2 ${state === 'siva' ? 'border-red-500 bg-red-900/20' : 'border-warmind-red/30'}`}>
               <div className="flex items-center gap-2 mb-1 text-warmind-red"><Globe size={12} className={state === 'siva' ? 'animate-spin' : ''} /><span className="text-[9px] font-bold">GLOBAL THREAT</span></div>
               <div className="text-xs font-black tracking-widest text-warmind-red">{state === 'siva' ? 'MIDNIGHT EXIGENT' : 'DEFCON 4'}</div>

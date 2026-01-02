@@ -14,7 +14,7 @@ const App = () => {
   const [logs, setLogs] = useState([
     { id: generateId(), type: 'system', text: 'AI-COM/RSPN: ONLINE', ru: 'ИИ-КОМ/РСПН: В СЕТИ' }
   ]);
-  const { playSound } = useAudio();
+  const { initAudio, playSound } = useAudio();
 
   const handleCommand = (cmd) => {
     playSound('execute');
@@ -53,7 +53,10 @@ const App = () => {
   };
 
   return (
-    <div className="relative w-full h-screen bg-black font-mono overflow-hidden selection:bg-red-900 selection:text-white">
+    <div
+      className="relative w-full h-screen bg-black font-mono overflow-hidden selection:bg-red-900 selection:text-white"
+      onClick={() => initAudio()}
+    >
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 7], fov: 60 }} gl={{ antialias: false }}>
           <Warmind3D state={state} />
